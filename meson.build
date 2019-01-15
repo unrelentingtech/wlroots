@@ -83,6 +83,7 @@ conf_data = configuration_data()
 conf_data.set10('WLR_HAS_SYSTEMD', false)
 conf_data.set10('WLR_HAS_ELOGIND', false)
 conf_data.set10('WLR_HAS_LIBSEAT', false)
+conf_data.set10('WLR_HAS_CONSOLEKIT2', false)
 conf_data.set10('WLR_HAS_X11_BACKEND', false)
 conf_data.set10('WLR_HAS_XWAYLAND', false)
 conf_data.set10('WLR_HAS_XCB_ERRORS', false)
@@ -178,6 +179,7 @@ summary({
 	'systemd': conf_data.get('WLR_HAS_SYSTEMD', 0),
 	'elogind': conf_data.get('WLR_HAS_ELOGIND', 0),
 	'libseat': conf_data.get('WLR_HAS_LIBSEAT', 0),
+	'consolekit2': conf_data.get('WLR_HAS_CONSOLEKIT2', 0),
 	'xwayland': conf_data.get('WLR_HAS_XWAYLAND', 0),
 	'x11_backend': conf_data.get('WLR_HAS_X11_BACKEND', 0),
 	'xcb-icccm': conf_data.get('WLR_HAS_XCB_ICCCM', 0),
