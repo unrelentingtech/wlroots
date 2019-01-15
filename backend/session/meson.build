@@ -71,3 +71,12 @@ if libseat.found()
 	wlr_deps += libseat
 	conf_data.set10('WLR_HAS_LIBSEAT', true)
 endif
+
+dbus           = dependency('dbus-1', required: get_option('consolekit2'))
+threads        = dependency('threads', required: get_option('consolekit2'))
+consolekit     = dependency('libconsolekit', required: get_option('consolekit2'), version: '>=1.2')
+if consolekit.found()
+	wlr_files += files('consolekit2.c')
+	wlr_deps += [dbus, threads, consolekit]
+	conf_data.set10('WLR_HAS_CONSOLEKIT2', true)
+endif
