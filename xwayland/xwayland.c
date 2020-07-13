@@ -247,7 +247,10 @@ static int xserver_handle_ready(int signal_number, void *data) {
 		wlr_xwayland->cursor = NULL;
 	}
 
-
+	int scale = 1;
+	if (getenv("WLR_XWAYLAND_SCALE") != NULL)
+		scale = (int)strtol(getenv("WLR_XWAYLAND_SCALE"), NULL, 10);
+	wlr_xwayland_set_scale(wlr_xwayland, scale);
 	wlr_signal_emit_safe(&wlr_xwayland->events.ready, wlr_xwayland);
 	/* ready is a one-shot signal, fire and forget */
 	wl_signal_init(&wlr_xwayland->events.ready);
