@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include <wlr/types/wlr_xdg_foreign_v1.h>
 #include <wlr/types/wlr_xdg_shell.h>
-#include <wlr/types/wlr_xdg_shell_v6.h>
 #include <wlr/util/log.h>
 #include "util/signal.h"
 #include "util/uuid.h"
@@ -38,14 +37,6 @@ static bool verify_is_toplevel(struct wl_resource *client_resource,
 		if (xdg_surface->role != WLR_XDG_SURFACE_ROLE_TOPLEVEL) {
 			wl_resource_post_error(client_resource, -1,
 					"surface must be an xdg_toplevel");
-			return false;
-		}
-	} else if (wlr_surface_is_xdg_surface_v6(surface)) {
-		struct wlr_xdg_surface_v6 *xdg_surface_v6 =
-			wlr_xdg_surface_v6_from_wlr_surface(surface);
-		if (xdg_surface_v6->role != WLR_XDG_SURFACE_V6_ROLE_TOPLEVEL) {
-			wl_resource_post_error(client_resource, -1,
-					"surface must be an xdg_toplevel_v6");
 			return false;
 		}
 	} else {
@@ -121,17 +112,6 @@ static void xdg_imported_handle_set_parent_of(struct wl_client *client,
 			wlr_xdg_surface_from_wlr_surface(wlr_surface_child);
 
 		wlr_xdg_toplevel_set_parent(surface_child, surface);
-		wl_signal_add(&surface_child->events.unmap,
-				&child->xdg_surface_unmap);
-		wl_signal_add(&surface_child->toplevel->events.set_parent,
-				&child->xdg_toplevel_set_parent);
-	} else if (wlr_surface_is_xdg_surface_v6(wlr_surface)) {
-		struct wlr_xdg_surface_v6 *surface =
-			wlr_xdg_surface_v6_from_wlr_surface(wlr_surface);
-		struct wlr_xdg_surface_v6 *surface_child =
-			wlr_xdg_surface_v6_from_wlr_surface(wlr_surface_child);
-
-		wlr_xdg_toplevel_v6_set_parent(surface_child, surface);
 		wl_signal_add(&surface_child->events.unmap,
 				&child->xdg_surface_unmap);
 		wl_signal_add(&surface_child->toplevel->events.set_parent,
@@ -265,10 +245,6 @@ static void xdg_exporter_handle_export_toplevel(struct wl_client *wl_client,
 		struct wlr_xdg_surface *xdg_surface =
 			wlr_xdg_surface_from_wlr_surface(surface);
 		wl_signal_add(&xdg_surface->events.unmap, &exported->xdg_surface_unmap);
-	} else if (wlr_surface_is_xdg_surface_v6(surface)) {
-		struct wlr_xdg_surface_v6 *xdg_surface_v6 =
-			wlr_xdg_surface_v6_from_wlr_surface(surface);
-		wl_signal_add(&xdg_surface_v6->events.unmap, &exported->xdg_surface_unmap);
 	}
 }
 
